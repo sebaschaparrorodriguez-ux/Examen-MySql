@@ -1,5 +1,6 @@
 -- =========================================
 -- EXAMEN: Inventario Pizzería Don Piccolo
+-- Script principal (ejecutar antes del trigger)
 -- =========================================
 
 -- 1) Tabla de ingredientes
@@ -34,29 +35,7 @@ JOIN ingredientes i ON m.id_ingrediente = i.id_ingrediente
 ORDER BY m.fecha_movimiento DESC
 LIMIT 5;
 
--- 5) Trigger: actualiza el stock automáticamente al registrar un movimiento
-DELIMITER $$
-
-CREATE TRIGGER actualizar_stock_ingrediente
-AFTER INSERT ON movimientos_ingrediente
-FOR EACH ROW
-BEGIN
-    -- Si es ENTRADA, se suma la cantidad al stock
-    IF NEW.tipo = 'ENTRADA' THEN
-        UPDATE ingredientes
-        SET stock_actual = stock_actual + NEW.cantidad
-        WHERE id_ingrediente = NEW.id_ingrediente;
-    -- Si es SALIDA, se resta la cantidad del stock
-    ELSEIF NEW.tipo = 'SALIDA' THEN
-        UPDATE ingredientes
-        SET stock_actual = stock_actual - NEW.cantidad
-        WHERE id_ingrediente = NEW.id_ingrediente;
-    END IF;
-END$$
-
-DELIMITER ;
-
--- 6) Vista resumen del inventario (ordenada por diferencia)
+-- 5) Vista resumen del inventario (ordenada por diferencia)
 CREATE VIEW vista_resumen_inventario AS
 SELECT
     nombre,
@@ -65,3 +44,7 @@ SELECT
     (stock_actual - stock_minimo) AS diferencia
 FROM ingredientes
 ORDER BY diferencia ASC;
+
+-- NOTA: el trigger 'actualizar_stock_ingrediente' está en el archivo
+-- trigger_actualizar_stock.sql, ejecutarlo después de este script
+-- porque depende de la tabla movimientos_ingrediente creada aquí.
