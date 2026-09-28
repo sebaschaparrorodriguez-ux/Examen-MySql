@@ -15,16 +15,16 @@ CREATE TABLE ingredientes (
 CREATE TABLE movimientos_ingrediente (
     id_movimiento INT AUTO_INCREMENT PRIMARY KEY,
     id_ingrediente INT NOT NULL,
-    tipo ENUM('ENTRADA','SALIDA') NOT NULL,
+    tipo ENUM('ENTRADA','SALIDA') NOT NULL, --tipo ENUM es para definir entrada o salida como valores posibles
     cantidad DECIMAL(10,2) NOT NULL,
-    fecha_movimiento DATETIME DEFAULT NOW(),
+    fecha_movimiento DATETIME DEFAULT NOW(), --datetime default now agarra la fecha y hora actual del sistema para darle orden a los movimientos
     FOREIGN KEY (id_ingrediente) REFERENCES ingredientes(id_ingrediente)
 );
 
 -- 3) Ingredientes con bajo stock (stock_actual < stock_minimo)
 SELECT nombre, unidad_medida, stock_actual
 FROM ingredientes
-WHERE stock_actual < stock_minimo
+WHERE stock_actual < stock_minimo --where filtra los ingredientes que tienen stock_actual menor al stock_minimo
 ORDER BY stock_actual ASC;
 
 -- 4) Últimos 5 movimientos registrados (con nombre del ingrediente)
