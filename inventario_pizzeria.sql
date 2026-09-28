@@ -1,6 +1,5 @@
 -- =========================================
 -- EXAMEN: Inventario Pizzería Don Piccolo
--- Script principal (ejecutar antes del trigger)
 -- =========================================
 
 -- 1) Tabla de ingredientes
@@ -45,6 +44,3 @@ SELECT
 FROM ingredientes
 ORDER BY diferencia ASC;
 
--- NOTA: el trigger 'actualizar_stock_ingrediente' está en el archivo
--- trigger_actualizar_stock.sql, ejecutarlo después de este script
--- porque depende de la tabla movimientos_ingrediente creada aquí.
